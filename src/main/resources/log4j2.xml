@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<configuration monitorInterval="0">
+
+    <Properties>
+        <property name="every_file_size">50M</property><!-- 日志切割的最小单位 -->
+    </Properties>
+
+    <Appenders>
+        <Console name="SYSOUT" target="SYSTEM_OUT">
+            <PatternLayout>
+                <Pattern>%-d{yyyy-MM-dd HH:mm:ss}%n[%p]-[Thread: %t]-[%C.%M()]: %m%n </Pattern>
+            </PatternLayout>
+        </Console>
+
+        <!-- name可以自定义，作用是在Loggers中AppenderRef中使用 -->
+        <!-- fileName定义输出文件名称（当前文件） -->
+        <!-- filePattern定义输出文件名称（文件满足条件后自动截断，生成历史文件） -->
+        <!--  <RollingFile name="DEBUG_ROLLING_FILE"
+                       fileName="/logs/logs.logs"
+                       filePattern="/logs/%d{yyyy-MM-dd}-logs.log">
+              <PatternLayout>
+                  <Pattern>n%-d{yyyy-MM-dd HH:mm:ss}%n[%p]-[Thread: %t]-[%C.%M()]: %m%n </Pattern>
+              </PatternLayout>
+
+              &lt;!&ndash; 文件截断的条件，具体参考文档 &ndash;&gt;
+              <Policies>
+                  <TimeBasedTriggeringPolicy interval="1"/>
+                  <SizeBasedTriggeringPolicy size="250 MB"/>
+              </Policies>
+
+              <DefaultRolloverStrategy>
+                  <Delete basePath="/logs/" maxDepth="1">
+                      <IfFileName glob="*.log" />
+                      <IfLastModified age="30d" />
+                  </Delete>
+              </DefaultRolloverStrategy>
+
+          </RollingFile>-->
+
+        <!-- name可以自定义，作用是在Loggers中AppenderRef中使用 -->
+        <!-- fileName定义输出文件名称（当前文件） -->
+        <!-- filePattern定义输出文件名称（文件满足条件后自动截断，生成历史文件） -->
+        <RollingRandomAccessFile  name="DEBUG_ROLLING_FILE"
+                                  fileName="/logs/web/logs.logs"
+                                  filePattern="/logs/web/%d{yyyy-MM-dd}-logs.log.zip">
+            <PatternLayout>
+                <Pattern>%-d{yyyy-MM-dd HH:mm:ss}%n[%p]-[Thread: %t]-[%C.%M()]: %m%n </Pattern>
+            </PatternLayout>
+
+            <!-- 文件截断的条件，具体参考文档 -->
+            <Policies>
+                <TimeBasedTriggeringPolicy  modulate="true" interval="1"/>
+                <SizeBasedTriggeringPolicy size="${every_file_size}"/>
+            </Policies>
+
+            <DefaultRolloverStrategy>
+                <Delete basePath="/logs/web/" maxDepth="1">
+                    <IfFileName glob="*.log.zip" />
+                    <IfLastModified age="30d" />
+                </Delete>
+            </DefaultRolloverStrategy>
+
+        </RollingRandomAccessFile >
+
+
+        <!-- 同一来源的Appender可以定义多个 -->
+        <RollingFile name="ERROR_ROLLING_FILE"
+                     fileName="/logs/web/error-logs.logs"
+                     filePattern="/logs/web/%d{yyyy-MM-dd}-error.log">
+            <!-- 可以通过该参数来设置获取日志的权限 -->
+            <ThresholdFilter level="error" onMatch="ACCEPT" onMismatch="DENY"/>
+            <PatternLayout>
+                <Pattern>%-d{yyyy-MM-dd HH:mm:ss}%n[%p]-[Thread: %t]-[%C.%M()]: %m%n </Pattern>
+            </PatternLayout>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1"/>
+                <SizeBasedTriggeringPolicy size="250 MB"/>
+            </Policies>
+        </RollingFile>
+    </Appenders>
+
+    <loggers>
+        <Root level="info">
+            <AppenderRef ref="SYSOUT"/>
+            <AppenderRef ref="DEBUG_ROLLING_FILE"/>
+            <AppenderRef ref="ERROR_ROLLING_FILE"/>
+        </Root>
+    </loggers>
+
+</configuration>
