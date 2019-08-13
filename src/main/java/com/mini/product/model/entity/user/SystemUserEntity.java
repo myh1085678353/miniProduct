@@ -1,4 +1,4 @@
-package com.mini.product.model.entity;
+package com.mini.product.model.entity.user;
 
 import javax.persistence.*;
 import java.util.prefs.BackingStoreException;
