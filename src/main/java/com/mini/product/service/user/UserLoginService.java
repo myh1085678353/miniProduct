@@ -1,7 +1,7 @@
 package com.mini.product.service.user;
 
 import com.mini.product.model.entity.user.UserLoginData;
-import com.mini.product.model.reponsitory.user.UserLoginDataRepository;
+import com.mini.product.model.repository.user.UserLoginDataRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

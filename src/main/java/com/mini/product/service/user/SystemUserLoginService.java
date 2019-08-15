@@ -1,7 +1,7 @@
 package com.mini.product.service.user;
 
 import com.mini.product.model.entity.user.SystemUserLoginEntity;
-import com.mini.product.model.reponsitory.user.SystemUserLoginRepository;
+import com.mini.product.model.repository.user.SystemUserLoginRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +22,10 @@ public class SystemUserLoginService {
     }
 
     public List<SystemUserLoginEntity> findLoginOutDataByUid(String uid){
-        return systemUserLoginRepository.findAllByUidAndLoginOutTimeIsNotNull(uid);
+        return systemUserLoginRepository.findAllByUidAndLoginOutTimeNull(uid);
+    }
+
+    public void savAll(List<SystemUserLoginEntity> systemUserLoginEntities){
+        systemUserLoginRepository.saveAll(systemUserLoginEntities);
     }
 }

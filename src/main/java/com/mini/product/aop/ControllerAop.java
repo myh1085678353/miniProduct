@@ -32,7 +32,8 @@ public class ControllerAop {
     public static long endTime;
 
     @Pointcut("execution(* com.mini.product.controller..*(..))"+
-            "&& !execution(* com.mini.product.controller.user.SystemUserController.login(..))"
+            "&& !execution(* com.mini.product.controller.user.SystemUserController.login(..))" +
+            "&& !execution(* com.mini.product.controller.user.SystemUserController.logout(..))"
     )
     public void ControllerAopPointcut(){
 

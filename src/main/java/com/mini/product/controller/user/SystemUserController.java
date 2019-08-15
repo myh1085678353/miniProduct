@@ -6,11 +6,10 @@ import com.mini.product.model.entity.user.SystemUserLoginEntity;
 import com.mini.product.model.entity.user.UserLoginData;
 import com.mini.product.response.ResponseUtil;
 import com.mini.product.service.user.SystemUserLoginService;
-import com.mini.product.service.user.SystenUserService;
+import com.mini.product.service.user.SystemUserService;
 import com.mini.product.service.user.UserLoginService;
 import com.mini.product.util.IPUtil;
 import com.mini.product.util.StringUtil;
-import org.apache.catalina.util.RequestUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,9 +20,10 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("${CommonValue.base_url}/user")
@@ -31,31 +31,13 @@ public class SystemUserController {
     private static Logger log = LoggerFactory.getLogger(SystemUserController.class);
 
     @Autowired
-    SystenUserService systenUserService;
+    SystemUserService systemUserService;
 
     @Autowired
     SystemUserLoginService systemUserLoginService;
 
     @Autowired
     UserLoginService userLoginService;
-
-    @RequestMapping("findAll")
-    public List<SystemUserEntity> findAll(){
-        return systenUserService.findAll();
-    }
-
-    @RequestMapping("saveTest")
-    public void saveTest(){
-        SystemUserEntity systemUserEntity = new SystemUserEntity();
-        systemUserEntity.setName("root");
-        systemUserEntity.setPassword(StringUtil.setPassword("123456"));
-        systemUserEntity.setUid(StringUtil.getUUID32());
-
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        systemUserEntity.setCreateTime(sdf.format(new Date()));
-
-        systenUserService.save(systemUserEntity);
-    }
 
     @CrossOrigin(allowedHeaders = "token")
     @RequestMapping("login")
@@ -67,7 +49,7 @@ public class SystemUserController {
         log.info("request ip:"+ ip);
 
         systemUserEntity.setPassword(StringUtil.setPassword(systemUserEntity.getPassword()));
-        systemUserEntity = systenUserService.login(systemUserEntity);   //查找用户信息
+        systemUserEntity = systemUserService.login(systemUserEntity);   //查找用户信息
 
         StringBuffer requestServerpath = httpServletRequest.getRequestURL();
         requestServerpath.delete(requestServerpath.indexOf("/", 7), requestServerpath.length());
@@ -79,7 +61,7 @@ public class SystemUserController {
             return ResponseUtil.Error(SystemEnum.Error_User_Deleted.toString());
         }
         List<SystemUserLoginEntity> loginData = systemUserLoginService.findLoginDataByUid(systemUserEntity.getUid());
-        loginData.forEach(loginEntity -> userLoginService.userLogout(loginEntity.getToken()));  //按照token清除缓存
+        loginData.forEach(loginEntity -> userLoginService.userLogout(loginEntity.getToken()));  //按照token清除缓存,保证只有一个终端登录
 
         SystemUserLoginEntity systemUserLoginEntity = new SystemUserLoginEntity();
         systemUserLoginEntity.setUid(systemUserEntity.getUid());
@@ -115,8 +97,27 @@ public class SystemUserController {
         }
         UserLoginData userLoginData = userLoginService.getUserInfo(token);
         List<SystemUserLoginEntity> LogoutData = systemUserLoginService.findLoginOutDataByUid(userLoginData.getSystemUserEntity().getUid());
+        LogoutData.forEach(logoutData ->logoutData.setLoginOutTime(new Date()));
+        systemUserLoginService.savAll(LogoutData);
         session.invalidate();   //seesion作废
 
         return ResponseUtil.SUCCESS(SystemEnum.Success_User_LoginOut.toString());
+    }
+
+    @RequestMapping("getLoginUser")
+    public ResponseUtil getLoginUser(HttpSession session){
+        String uid = (String)session.getAttribute("uid");
+        if(uid == null || uid.equals("")){
+            return ResponseUtil.Error(SystemEnum.Error_Login_Action.toString());
+        }
+        SystemUserEntity systemUserEntity = systemUserService.findFristByUid(uid);
+        if(systemUserEntity == null){
+            return ResponseUtil.Error(SystemEnum.Error_User_Not_Exist.toString());
+        }
+        systemUserEntity.setPassword("");
+        Map<String,Object> res = new HashMap<>();
+        res.put("user",systemUserEntity);
+
+        return ResponseUtil.SUCCESS(res);
     }
 }

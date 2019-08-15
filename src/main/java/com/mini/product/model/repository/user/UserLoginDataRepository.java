@@ -1,4 +1,4 @@
-package com.mini.product.model.reponsitory.user;
+package com.mini.product.model.repository.user;
 
 import com.mini.product.model.entity.user.UserLoginData;
 import org.slf4j.Logger;
