@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpSession;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -22,13 +23,15 @@ public class SystemMenuController {
     @Autowired
     SystemMenuService systemMenuService;
 
-    @RequestMapping(name = "getMenuAll")
+    @RequestMapping("getMenuAll")
     public ResponseUtil getMenuAll(HttpSession session){
         String uid = (String)session.getAttribute("uid");
 
         List<SystemMenuEntity> systemMenuEntityList = systemMenuService.getMenuAllForText();
 
         List<Map<String,Object>> list = systemMenuService.getTarbar(systemMenuEntityList);
-        return ResponseUtil.SUCCESS();
+        Map<String,Object> res = new HashMap<>();
+        res.put("data",list);
+        return ResponseUtil.SUCCESS(res);
     }
 }

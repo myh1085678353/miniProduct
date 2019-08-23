@@ -2,9 +2,18 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>erp</title>
+    <link rel="stylesheet" href="/js/layui/css/layui.css">
 </head>
 <body>
 page2
 </body>
+<script type="text/javascript" src="/js/jquery.min.js"></script>
+<script type="text/javascript" src="/js/layui/layui.all.js"></script>
+<script type="text/javascript">
+    $(document).ready(function(){
+        var table_name = $(window.frameElement).attr("data-frameid");
+        console.info(table_name);
+    })
+</script>
 </html>

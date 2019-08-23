@@ -63,6 +63,7 @@ public class ControllerAop {
         if(userLoginData != null){
             session.setAttribute("uid",userLoginData.getSystemUserEntity().getUid());
             session.setAttribute("requestpath",userLoginData.getRequestPath());
+            session.setMaxInactiveInterval(30*60);
 
             if(session.getAttribute("uid") == null || session.getAttribute("uid").equals("")){
                 throw new LoginErrorException();

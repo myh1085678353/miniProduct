@@ -3,13 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <title>首页</title>
+    <title>什么也不是系统</title>
     <link rel="stylesheet" href="/js/layui/css/layui.css">
 </head>
+<style>
+    body{
+        font-size: 1vw;
+    }
+</style>
 <body class="layui-layout-body">
 <div class="layui-layout layui-layout-admin">
     <div class="layui-header">
-        <div class="layui-logo">老子学够了！放老子出去</div>
+        <div class="layui-logo"><p>老子学够了！放老子出去</p></div>
         <ul class="layui-nav layui-layout-left">
             <li class="layui-nav-item"><a href="">控制台</a></li>
             <li class="layui-nav-item"><a href="javascript:;" onclick="joke()">你点这儿试试</a></li>
@@ -21,27 +26,7 @@
         </ul>
     </div>
     <div class="layui-side layui-bg-black">
-        <ul class="layui-nav layui-nav-tree"  lay-filter="test">
-            <li class="layui-nav-item layui-nav-itemed">
-                <a href="javascript:;">tarbar1</a>
-                <dl class="layui-nav-child">
-                    <dd><a href="javascript:;" data-id="1" data-title="列表一" data-url="/page/text/page1.html"
-                           class="site-demo-active" data-type="tabAdd">列表一</a></dd>
-                    <dd><a href="javascript:;" data-id="2" data-title="列表二" data-url="/page/text/page2.html"
-                           class="site-demo-active" data-type="tabAdd">列表二</a></dd>
-                    <dd><a href="javascript:;" data-id="4" data-title="列表三" data-url="/page/text/page3.html"
-                           class="site-demo-active" data-type="tabAdd">列表三</a></dd>
-                </dl>
-            </li>
-            <li class="layui-nav-item">
-                <a href="javascript:;">tarbar2</a>
-                <dl class="layui-nav-child">
-                    <dd><a href="javascript:;">列表一</a></dd>
-                    <dd><a href="javascript:;">列表二</a></dd>
-                </dl>
-            </li>
-            <li class="layui-nav-item"><a href="javascript:;">tarbar3</a></li>
-            <li class="layui-nav-item"><a href="javascript:;">tarbar4</a></li>
+        <ul class="layui-nav layui-nav-tree" id="tabBar">
         </ul>
     </div>
     <div class="layui-body">
@@ -61,39 +46,83 @@
     </div>
 </div>
 </body>
-<script type="text/javascript" src="/js/jquery.min.js"></script>
-<script type="text/javascript" src="/js/layui/layui.all.js"></script>
-<script type="text/html" id="tarFirst">
-    <li class="layui-nav-item" id="{tarFirst}">
-        <a href="javascript:;">{tarFirst}</a>
+<script src="/js/jquery.min.js"></script>
+<script src="/js/layui/layui.all.js"></script>
+<script>document.write("<script src='/js/utils.js?"+Math.random()+"'>/<\/script>")</script>
+<script type="text/html" id="tabBar_li">
+    <li class="layui-nav-item" name="{tarFirst}">
+        <a href="javascript:;">
+            {tarFirst}
+        </a>
     </li>
 </script>
-<script type="text/html" id="tarSecond">
-    <dl class="layui-nav-child" id="{tarSecond}">
-    </dl>
+<script type="text/html" id="list_dl">
+    <dl class="layui-nav-child" name="{tarFirst}"></dl>
 </script>
-<script type="text/html" id="tarThird">
-    <dd><i class="layui-icon">&#xe62d;</i><a href="javascript:;" target="">{tarSecond}</a></dd>
+<script type="text/html" id="secondary_list">
+    <dd>
+        <a href="javascript:;" data-id="{data_id}" data-title="{data_title}" data-url="{data_url}"
+           class="site-demo-active" data-type="tabAdd">{data_title}</a>
+    </dd>
 </script>
 <script>
+    var tarBar_li = document.getElementById("tabBar_li").innerHTML;
+    var list_dl = document.getElementById("list_dl").innerHTML;
+    var secondary_list = document.getElementById("secondary_list").innerHTML;
+
     $(document).ready(function(){
+        render_bar();
         init_user();
-        initTab();
     })
 
-    function initTab(){
-        $(".layui-nav-tree .layui-nav-item").click(function(){
-            if($(this)[0].className == "layui-nav-item layui-nav-itemed"){
-                $(".layui-nav-tree .layui-nav-item").removeClass("layui-nav-itemed").removeClass("layui-this");
-                $(this).addClass($(this).has('dl').length ? "layui-nav-itemed" : "layui-this");
-            }else{
-                $(".layui-nav-tree .layui-nav-item").removeClass("layui-nav-itemed").removeClass("layui-this");
+    function render_bar(){
+        var layer_index = layer.load(2);
+        $.myajax({
+            url: "/mini/menu/getMenuAll",
+            type: "get"
+        },function(data){
+            if(data.code == 200 && data.message == "请求成功"){
+                layer.close(layer_index);
+                var menu = data.data.data;
+                for(var idx in menu){
+                    var html = tarBar_li.replace("{tarFirst}",menu[idx].tabBar.dataTitle).replace("{tarFirst}",menu[idx].tabBar.dataTitle);
+                    $("#tabBar").append(html);
+                    if(menu[idx].dl.length > 0){
+                        html = list_dl.replace("{tarFirst}",menu[idx].tabBar.dataTitle);
+                        $('li[name="'+menu[idx].tabBar.dataTitle+'"]').append(html);
+                    }
+                    html = "";
+                    for(var i in menu[idx].dl){
+                        html += secondary_list.replace("{data_id}",menu[idx].dl[i].dataId).replace("{data_title}",menu[idx].dl[i].dataTitle)
+                            .replace("{data_url}",menu[idx].dl[i].dataUrl).replace("{data_title}",menu[idx].dl[i].dataTitle);
+                    }
+                    $('dl[name="'+menu[idx].tabBar.dataTitle+'"]').append(html);
+                }
+                $('ul li[name="'+menu[0].tabBar.dataTitle+'"]').addClass("layui-nav-itemed");
+
+                layui.use('element', function() {
+                    var element = layui.element;
+                    element.init();
+                });
+                initTab();
             }
 
         })
+    }
+
+    function initTab(){
         layui.use('element', function() {
             var $ = layui.jquery;
             var element = layui.element;
+
+            $(".layui-nav-tree .layui-nav-item").click(function(){
+                if($(this)[0].className == "layui-nav-item layui-nav-itemed"){
+                    $(".layui-nav-tree .layui-nav-item").removeClass("layui-nav-itemed").removeClass("layui-this");
+                    $(this).addClass($(this).has('dl').length ? "layui-nav-itemed" : "layui-this");
+                }else{
+                    $(".layui-nav-tree .layui-nav-item").removeClass("layui-nav-itemed").removeClass("layui-this");
+                }
+            });
 
             $('.site-demo-active').on('click', function () {
                 var dataid = $(this);
@@ -126,7 +155,7 @@
                     //关于tabAdd的方法所传入的参数可看layui的开发文档中基础方法部分
                     element.tabAdd('demo', {
                         title: name,
-                        content: '<iframe data-frameid="' + id + '" scrolling="auto" frameborder="0" src="' + url + '" style="width:100%;height:99%;"></iframe>',
+                        content: '<iframe data-frameid="' + id + '" scrolling="auto" frameborder="0" src="' + url + '" style="width:100%;"></iframe>',
                         id: id //规定好的id
                     })
                     FrameWH(); //计算ifram层的大小
@@ -144,30 +173,25 @@
                 var h = $(window).height();
                 $("iframe").css("height", h + "px");
             }
+
+
         });
     }
 
     function init_user(){
-        $.ajax({
+        $.myajax({
             url: "/mini/user/getLoginUser",
-            dataType: "json",
-            success: function(data){
-                var user = data.data.user;
-                $("#username").text(user.name);
-            }
+        },function(data){
+            var user = data.data.user;
+            $("#username").text(user.name);
         })
     }
     function quit(){
-        $.ajax({
+        $.myajax({
             url: "/mini/user/logout",
-            dataType: "json",
-            success: function(data){
-                layer.msg(data.message,{icon:1});
-                setTimeout(window.location.href="/index.html",1000);
-            },
-            error: function(){
-                window.location.href="/index.html";
-            }
+        },function(data){
+            layer.msg(data.message,{icon:1});
+            setTimeout(window.location.href="/",1000);
         })
     }
     function joke(){

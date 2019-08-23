@@ -28,4 +28,8 @@ public class SystemUserLoginService {
     public void savAll(List<SystemUserLoginEntity> systemUserLoginEntities){
         systemUserLoginRepository.saveAll(systemUserLoginEntities);
     }
+
+    public List<SystemUserLoginEntity> findLoginDataByToken(String token){
+        return systemUserLoginRepository.findAllByToken(token);
+    }
 }

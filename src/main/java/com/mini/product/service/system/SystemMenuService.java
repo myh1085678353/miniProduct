@@ -27,7 +27,7 @@ public class SystemMenuService {
             if(systemMenuEntity.getSequence() != null){
                 Map<String,Object> res = new HashMap<>();
                 List<SystemMenuEntity> systemMenuEntities1 = getdl(systemMenuEntities,systemMenuEntity.getSequence());
-                res.put("tarbar",systemMenuEntity);
+                res.put("tabBar",systemMenuEntity);
                 res.put("dl",systemMenuEntities1);
 
                 list.add(res);

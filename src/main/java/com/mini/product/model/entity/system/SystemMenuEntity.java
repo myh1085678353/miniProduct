@@ -12,6 +12,7 @@ public class SystemMenuEntity {
     private Integer sequence;
     private String dataUrl;
     private String dataTitle;
+    private String dataId;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -71,5 +72,15 @@ public class SystemMenuEntity {
 
     public void setDataTitle(String dataTitle) {
         this.dataTitle = dataTitle;
+    }
+
+    @Basic
+    @Column(name = "data_id")
+    public String getDataId() {
+        return dataId;
+    }
+
+    public void setDataId(String dataId) {
+        this.dataId = dataId;
     }
 }

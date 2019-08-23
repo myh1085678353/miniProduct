@@ -60,8 +60,8 @@ public class SystemUserController {
         if(systemUserEntity.getDeleted() == 1){
             return ResponseUtil.Error(SystemEnum.Error_User_Deleted.toString());
         }
-        List<SystemUserLoginEntity> loginData = systemUserLoginService.findLoginDataByUid(systemUserEntity.getUid());
-        loginData.forEach(loginEntity -> userLoginService.userLogout(loginEntity.getToken()));  //按照token清除缓存,保证只有一个终端登录
+//        List<SystemUserLoginEntity> loginData = systemUserLoginService.findLoginDataByUid(systemUserEntity.getUid());
+//        loginData.forEach(loginEntity -> userLoginService.userLogout(loginEntity.getToken()));  //按照token清除缓存,保证只有一个终端登录
 
         SystemUserLoginEntity systemUserLoginEntity = new SystemUserLoginEntity();
         systemUserLoginEntity.setUid(systemUserEntity.getUid());
@@ -74,7 +74,7 @@ public class SystemUserController {
         systemUserLoginEntity.setCreateId(systemUserEntity.getId());
         systemUserLoginEntity.setCreateTime(new Date());
 
-        systemUserLoginService.saveUserLogin(systemUserLoginEntity);
+//        systemUserLoginService.saveUserLogin(systemUserLoginEntity);
         UserLoginData userLoginData = new UserLoginData();
         userLoginData.setLoginName(systemUserEntity.getName());
         userLoginData.setRequestPath(requestServerpath.toString());
@@ -96,9 +96,9 @@ public class SystemUserController {
             token = session.getId();
         }
         UserLoginData userLoginData = userLoginService.getUserInfo(token);
-        List<SystemUserLoginEntity> LogoutData = systemUserLoginService.findLoginOutDataByUid(userLoginData.getSystemUserEntity().getUid());
-        LogoutData.forEach(logoutData ->logoutData.setLoginOutTime(new Date()));
-        systemUserLoginService.savAll(LogoutData);
+//        List<SystemUserLoginEntity> LogoutData = systemUserLoginService.findLoginOutDataByUid(userLoginData.getSystemUserEntity().getUid());
+//        LogoutData.forEach(logoutData ->logoutData.setLoginOutTime(new Date()));
+//        systemUserLoginService.savAll(LogoutData);
         session.invalidate();   //seesion作废
 
         return ResponseUtil.SUCCESS(SystemEnum.Success_User_LoginOut.toString());
@@ -114,7 +114,7 @@ public class SystemUserController {
         if(systemUserEntity == null){
             return ResponseUtil.Error(SystemEnum.Error_User_Not_Exist.toString());
         }
-        systemUserEntity.setPassword("");
+        systemUserEntity.setPassword(null);
         Map<String,Object> res = new HashMap<>();
         res.put("user",systemUserEntity);
 

@@ -10,4 +10,6 @@ public interface SystemUserLoginRepository extends JpaRepository<SystemUserLogin
     List<SystemUserLoginEntity> findAllByUidAndTokenIsNotNull(String uid);
 
     List<SystemUserLoginEntity> findAllByUidAndLoginOutTimeNull(String uid);
+
+    List<SystemUserLoginEntity> findAllByToken(String token);
 }
