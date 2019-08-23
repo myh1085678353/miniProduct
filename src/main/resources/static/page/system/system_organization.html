@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>机构管理</title>
+    <link rel="stylesheet" href="/js/layui/css/layui.css">
+</head>
+<style>
+    body{
+        padding: 0;
+        margin: 0;
+    }
+
+    .layui-colla-title{
+        backgroud-color: #2e2e2e;
+        font: 17px !important;
+        font-weight: bold;
+    }
+</style>
+<body>
+<div class="layui-fluid">
+    <div class="layui-collapse">
+        <div class="layui-colla-item">
+            <div class="layui-colla-title">查询</div>
+            <div class="layui-colla-content layui-show">
+                <div class="layui-row">
+                    <form id="form" class="layui-form" lay-filter="search_form">
+                        <div id="search_form" class="layui-col-xs9">
+                            <div class="layui-col-xs4">
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">标签1：</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" class="layui-input">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="layui-col-xs4">
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">标签2：</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" class="layui-input">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="layui-col-xs4">
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">标签3：</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" class="layui-input">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="layui-col-xs1 layui-col-xs-offset1">
+                            <div class="layui-form-item">
+                                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                            </div>
+                        </div>
+                        <div class="layui-col-xs1">
+                            <div class="layui-form-item">
+                                <button class="layui-btn" lay-submit lay-filter="search">搜索</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="layui-row" style="padding-top: 10px">
+        <div class="layui-col-xs1">
+            <a class="layui-btn">新增</a>
+        </div>
+        <div class="layui-col-xs1">
+            <a class="layui-btn">删除</a>
+        </div>
+        <div class="layui-col-xs1">
+            <a class="layui-btn">修改</a>
+        </div>
+    </div>
+</div>
+</body>
+<script src="/js/jquery.min.js"></script>
+<script src="/js/layui/layui.all.js"></script>
+<script>document.write("<script src='/js/utils.js?"+Math.random()+"'>/<\/script>")</script>
+<script>
+    $(document).ready(function(){
+        var iframe = $(window.frameElement).attr("data-frameid");
+
+        layui.use(['element','layer'],function(){
+            var element = layui.element;
+            var layer = layui.layer;
+
+
+        })
+    })
+</script>
+</html>
