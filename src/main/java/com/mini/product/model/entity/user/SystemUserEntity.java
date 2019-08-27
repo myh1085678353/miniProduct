@@ -11,6 +11,7 @@ public class SystemUserEntity {
     private String uid;
     private String name;
     private String password;
+    private Integer oid;
     private String createTime;
     private String createBy;
     private Integer deleted;
@@ -53,6 +54,17 @@ public class SystemUserEntity {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+
+    @Basic
+    @Column(name = "oid")
+    public Integer getOid() {
+        return oid;
+    }
+
+    public void setOid(Integer oid) {
+        this.oid = oid;
     }
 
     @Basic
