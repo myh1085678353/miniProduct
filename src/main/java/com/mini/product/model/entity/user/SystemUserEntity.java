@@ -59,7 +59,7 @@ public class SystemUserEntity {
 
 
     @OneToOne
-    @JoinColumn(name = "oid",insertable = false,updatable = false)
+    @JoinColumn(name = "oid",referencedColumnName = "id",insertable = false,updatable = false)
     public SystemInstitutionsEntity getSystemInstitutionsEntity() {
         return systemInstitutionsEntity;
     }
