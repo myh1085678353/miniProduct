@@ -1,7 +1,8 @@
 package com.mini.product.model.entity.user;
 
+import com.mini.product.model.entity.system.SystemInstitutionsEntity;
+
 import javax.persistence.*;
-import java.util.prefs.BackingStoreException;
 
 @Entity
 @Table(name = "sys_user")
@@ -11,7 +12,7 @@ public class SystemUserEntity {
     private String uid;
     private String name;
     private String password;
-    private Integer oid;
+    private SystemInstitutionsEntity systemInstitutionsEntity;
     private String createTime;
     private String createBy;
     private Integer deleted;
@@ -57,14 +58,14 @@ public class SystemUserEntity {
     }
 
 
-    @Basic
-    @Column(name = "oid")
-    public Integer getOid() {
-        return oid;
+    @OneToOne
+    @JoinColumn(name = "oid",insertable = false,updatable = false)
+    public SystemInstitutionsEntity getSystemInstitutionsEntity() {
+        return systemInstitutionsEntity;
     }
 
-    public void setOid(Integer oid) {
-        this.oid = oid;
+    public void setSystemInstitutionsEntity(SystemInstitutionsEntity systemInstitutionsEntity) {
+        this.systemInstitutionsEntity = systemInstitutionsEntity;
     }
 
     @Basic

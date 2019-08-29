@@ -1,4 +1,4 @@
-package com.mini.product.model.entity.institutions;
+package com.mini.product.model.entity.system;
 
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;

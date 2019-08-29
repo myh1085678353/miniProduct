@@ -1,7 +1,7 @@
-package com.mini.product.service.institutions;
+package com.mini.product.service.system;
 
-import com.mini.product.model.entity.institutions.SystemInstitutionsEntity;
-import com.mini.product.model.repository.institutions.SystemInstitutionsRepository;
+import com.mini.product.model.entity.system.SystemInstitutionsEntity;
+import com.mini.product.model.repository.system.SystemInstitutionsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
