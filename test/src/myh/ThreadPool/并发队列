@@ -1,0 +1,17 @@
+并发队列： 先进先出
+    非阻塞队列：
+        入队：当队列中满了的时候，放入数据，数据丢失
+        出队：如果队列中没有元素，取数据，得到的是null
+
+        ConcurrentLinkedQueue<String> clq = new ConcurrentLinkedQueue<String>();
+        clq.add("")     入队
+        clq.poll()      出队
+        clq.peek()      输出队列第一个元素
+
+    阻塞队列：
+        入队：当队列满了的时候，进行等待，什么时候队列中有出队的数据，再放进去
+        出队：等待，什么时候放进去，再取出来
+
+
+
+线程池使用阻塞队列
