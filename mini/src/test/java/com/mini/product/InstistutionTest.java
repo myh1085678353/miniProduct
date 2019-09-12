@@ -1,8 +1,8 @@
 package com.mini.product;
 
-import com.mini.product.model.entity.institutions.SystemInstitutionsEntity;
-import com.mini.product.model.repository.institutions.SystemInstitutionsRepository;
-import com.mini.product.service.institutions.SystemInstitutionsService;
+import com.mini.product.model.entity.system.SystemInstitutionsEntity;
+import com.mini.product.model.repository.system.SystemInstitutionsRepository;
+import com.mini.product.service.system.SystemInstitutionsService;
 import com.mini.product.service.user.SystemUserService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
