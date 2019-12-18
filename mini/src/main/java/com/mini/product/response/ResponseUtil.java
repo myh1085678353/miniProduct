@@ -2,9 +2,18 @@ package com.mini.product.response;
 
 import java.util.Map;
 
-public class ResponseUtil {
+public class ResponseUtil<T> {
+    //泛型T储存任何类型，返回给前端
+    public T data;
 
-    public Map<String,Object> data;
+    public T getData() {
+        return data;
+    }
+
+    public void setData(T data) {
+        this.data = data;
+    }
+
     public String message = "";
     public long time;
     public Integer code;
@@ -13,7 +22,7 @@ public class ResponseUtil {
 
     }
 
-    public ResponseUtil(Map<String,Object> data, String message, Integer code){
+    public ResponseUtil(T data, String message, Integer code){
         this.data = data;
         this.message = message;
         this.time = System.currentTimeMillis();
