@@ -18,15 +18,15 @@ public class SystemUserServiceImpl implements SystemUserService {
         return systemUserRepository.findAll();
     }
 
-    public void save(SystemUserEntity systemUserEntity){
-        systemUserRepository.save(systemUserEntity);
+    public SystemUserEntity save(SystemUserEntity systemUserEntity){
+        return systemUserRepository.save(systemUserEntity);
     }
 
     public SystemUserEntity login(SystemUserEntity systemUserEntity){
         return systemUserRepository.findFirstByNameAndPassword(systemUserEntity.getName(),systemUserEntity.getPassword());
     }
 
-    public SystemUserEntity findFristByUid(String uid){
+    public SystemUserEntity findFirstByUid(String uid){
         return systemUserRepository.findFirstByUidAndDeleted(uid,0);
     }
 

@@ -100,7 +100,7 @@ public class ControllerAop {
         long SpeedTime = endTime - startTime;
         log.info("The function " + signature.getDeclaringTypeName() + "." + signature.getName() + "  have exception spend " + SpeedTime + " ms");
 
-        return ResponseUtil.Error(ex.getMessage());
+        return new ResponseUtil(ex.getMessage());
     }
 
 }

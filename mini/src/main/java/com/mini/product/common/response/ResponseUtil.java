@@ -52,6 +52,7 @@ public class ResponseUtil<T> {
 
     public ResponseUtil(String message){
         this.message = message;
+        this.code = 200;
     }
 
     public ResponseUtil(T data, String message, Integer code){

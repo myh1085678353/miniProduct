@@ -2,13 +2,14 @@ package com.mini.product.module.user.service.impl;
 
 import com.mini.product.module.user.repository.SystemUserLoginRepository;
 import com.mini.product.module.user.entity.SystemUserLoginEntity;
+import com.mini.product.module.user.service.SystemUserLoginService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class SystemUserLoginServiceImpl {
+public class SystemUserLoginServiceImpl implements SystemUserLoginService {
 
     @Autowired
     SystemUserLoginRepository systemUserLoginRepository;
