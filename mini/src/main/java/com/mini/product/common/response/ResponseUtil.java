@@ -69,12 +69,12 @@ public class ResponseUtil<T> {
 
 
     public static <T>ResponseUtil<T> buildSuccess(){
-        return new ResponseUtil(SystemEnum.Result_Success.toString());
+        return new ResponseUtil(SystemEnum.Result_Success.toString(),200);
     }
 
 
 
     public static <T>ResponseUtil<T> buildError(){
-        return new ResponseUtil(SystemEnum.Result_Error.toString());
+        return new ResponseUtil(SystemEnum.Result_Error.toString(),500);
     }
 }
