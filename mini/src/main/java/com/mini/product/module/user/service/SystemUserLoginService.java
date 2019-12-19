@@ -9,7 +9,7 @@ import java.util.List;
  * 用户登录
  */
 public interface SystemUserLoginService {
-    SystemUserLoginEntity saveUserLogin(SystemUserEntity systemUserEntity, String SessionId, String ip, String requestServerpath);
+    SystemUserLoginEntity saveUserLogin(SystemUserEntity systemUserEntity,String token,String ip,String requestServerpath);
 
     List<SystemUserLoginEntity> findLoginDataByUid(String uid);
 

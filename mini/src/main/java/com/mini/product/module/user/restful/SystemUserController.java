@@ -41,6 +41,16 @@ public class SystemUserController {
     @Autowired
     UserLoginService userLoginService;
 
+    /**
+     * 登录
+     * 获取sessionId为token，request的url
+     * 将token放入response
+     * @param systemUserEntity
+     * @param session
+     * @param httpServletRequest
+     * @param httpServletResponse
+     * @return
+     */
     @CrossOrigin(allowedHeaders = "token")
     @RequestMapping("login")
     public ResponseUtil login(SystemUserEntity systemUserEntity, HttpSession session, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse){
@@ -50,7 +60,6 @@ public class SystemUserController {
         String ip = IPUtil.getIpAddress(httpServletRequest);
         log.info("request ip:"+ ip);
 
-        systemUserEntity.setPassword(StringUtil.setPassword(systemUserEntity.getPassword()));
         systemUserEntity = systemUserService.login(systemUserEntity);   //查找用户信息
 
         StringBuffer requestServerpath = httpServletRequest.getRequestURL();
@@ -62,23 +71,23 @@ public class SystemUserController {
         if(systemUserEntity.getDeleted() == 1){
             return new ResponseUtil(SystemEnum.Error_User_Deleted.toString());
         }
-//        List<SystemUserLoginEntity> loginData = systemUserLoginService.findLoginDataByUid(systemUserEntity.getUid());
-//        loginData.forEach(loginEntity -> userLoginService.userLogout(loginEntity.getToken()));  //按照token清除缓存,保证只有一个终端登录
 
-//        systemUserLoginService.saveUserLogin(systemUserLoginEntity);
-        UserLoginData userLoginData = new UserLoginData();
-        userLoginData.setLoginName(systemUserEntity.getName());
-        userLoginData.setRequestPath(requestServerpath.toString());
-        userLoginData.setToken(token);
-        userLoginData.setSystemUserEntity(systemUserEntity);
+//        systemUserLoginService.saveUserLogin(systemUserEntity,token,ip,requestServerpath.toString());
 
-        userLoginService.userLogin(userLoginData);
+
+        UserLoginData userLoginData = userLoginService.userLogin(systemUserEntity,token,requestServerpath.toString());
         httpServletResponse.addHeader("token", userLoginData.getToken());
         httpServletResponse.addHeader("Access-Control-Expose-Headers", "token");
 
         return new ResponseUtil(SystemEnum.Success_User_Login.toString());
     }
 
+    /**
+     * 登出，并设置session作废
+     * @param session
+     * @param servletRequest
+     * @return
+     */
     @CrossOrigin(allowedHeaders = "token")
     @RequestMapping("logout")
     public ResponseUtil logout(HttpSession session,HttpServletRequest servletRequest){
@@ -94,6 +103,11 @@ public class SystemUserController {
         return new ResponseUtil(SystemEnum.Success_User_LoginOut.toString());
     }
 
+    /**
+     * 获取登录用户信息
+     * @param session
+     * @return
+     */
     @RequestMapping("getLoginUser")
     public ResponseUtil getLoginUser(HttpSession session){
         String uid = (String)session.getAttribute("uid");
@@ -112,16 +126,13 @@ public class SystemUserController {
         return responseUtil;
     }
 
+    /**
+     * 注册，没有页面显示，直接采用url的方式注册
+     * @param systemUserEntity
+     * @return
+     */
     @RequestMapping("registered")
     public ResponseUtil registered(SystemUserEntity systemUserEntity){
-        String uuid = StringUtil.getUUID32();
-        systemUserEntity.setPassword(StringUtil.setPassword(systemUserEntity.getPassword()));
-        systemUserEntity.setUid(uuid);
-        systemUserEntity.setDeleted(0);
-        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        String localTime = dateTimeFormatter.format(LocalDateTime.now());
-        systemUserEntity.setCreateTime(localTime);
-
         systemUserEntity = systemUserService.save(systemUserEntity);
         ResponseUtil responseUtil = ResponseUtil.buildSuccess();
         return responseUtil;

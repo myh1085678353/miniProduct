@@ -4,6 +4,7 @@ import com.mini.product.module.user.entity.SystemUserEntity;
 import com.mini.product.module.user.repository.SystemUserLoginRepository;
 import com.mini.product.module.user.entity.SystemUserLoginEntity;
 import com.mini.product.module.user.service.SystemUserLoginService;
+import com.mini.product.module.user.service.UserLoginService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,11 +17,21 @@ public class SystemUserLoginServiceImpl implements SystemUserLoginService {
     @Autowired
     SystemUserLoginRepository systemUserLoginRepository;
 
-    public SystemUserLoginEntity saveUserLogin(SystemUserEntity systemUserEntity,String SessionId,String ip,String requestServerpath){
+    @Autowired
+    SystemUserLoginService systemUserLoginService;
+
+    @Autowired
+    UserLoginService userLoginService;
+
+
+    public SystemUserLoginEntity saveUserLogin(SystemUserEntity systemUserEntity,String token,String ip,String requestServerpath){
+        List<SystemUserLoginEntity> loginData = systemUserLoginService.findLoginDataByUid(systemUserEntity.getUid());
+        loginData.forEach(loginEntity -> userLoginService.userLogout(loginEntity.getToken()));  //按照token清除缓存,保证只有一个终端登录
+
         SystemUserLoginEntity systemUserLoginEntity = new SystemUserLoginEntity();
         systemUserLoginEntity.setUid(systemUserEntity.getUid());
         systemUserLoginEntity.setLoginName(systemUserEntity.getName());
-        systemUserLoginEntity.setSessionId(SessionId);
+        systemUserLoginEntity.setToken(token);
         systemUserLoginEntity.setLoginTime(new Date());
         systemUserLoginEntity.setIp(ip);
         systemUserLoginEntity.setAddress(requestServerpath);

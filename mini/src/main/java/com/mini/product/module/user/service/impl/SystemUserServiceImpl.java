@@ -3,10 +3,13 @@ package com.mini.product.module.user.service.impl;
 import com.mini.product.module.user.entity.SystemUserEntity;
 import com.mini.product.module.user.repository.SystemUserRepository;
 import com.mini.product.module.user.service.SystemUserService;
+import com.mini.product.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpSession;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,10 +25,18 @@ public class SystemUserServiceImpl implements SystemUserService {
     }
 
     public SystemUserEntity save(SystemUserEntity systemUserEntity){
+        String uuid = StringUtil.getUUID32();
+        systemUserEntity.setPassword(StringUtil.setPassword(systemUserEntity.getPassword()));
+        systemUserEntity.setUid(uuid);
+        systemUserEntity.setDeleted(0);
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        String localTime = dateTimeFormatter.format(LocalDateTime.now());
+        systemUserEntity.setCreateTime(localTime);
         return systemUserRepository.save(systemUserEntity);
     }
 
     public SystemUserEntity login(SystemUserEntity systemUserEntity){
+        systemUserEntity.setPassword(StringUtil.setPassword(systemUserEntity.getPassword()));
         return systemUserRepository.findFirstByNameAndPassword(systemUserEntity.getName(),systemUserEntity.getPassword());
     }
 
