@@ -99,8 +99,8 @@ public class ControllerAop {
         endTime = System.currentTimeMillis();
         long SpeedTime = endTime - startTime;
         log.info("The function " + signature.getDeclaringTypeName() + "." + signature.getName() + "  have exception spend " + SpeedTime + " ms");
-
-        return new ResponseUtil(ex.getMessage());
+        ResponseUtil responseUtil = new ResponseUtil(ex.getMessage());
+        return responseUtil;
     }
 
 }

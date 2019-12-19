@@ -5,9 +5,6 @@ import com.mini.product.module.user.entity.SystemUserEntity;
 import com.mini.product.module.user.entity.SystemUserLoginEntity;
 import com.mini.product.module.user.entity.UserLoginData;
 import com.mini.product.common.response.ResponseUtil;
-import com.mini.product.module.user.service.SystemUserLoginService;
-import com.mini.product.module.user.service.SystemUserService;
-import com.mini.product.module.user.service.UserLoginService;
 import com.mini.product.module.user.service.impl.SystemUserLoginServiceImpl;
 import com.mini.product.module.user.service.impl.SystemUserServiceImpl;
 import com.mini.product.module.user.service.impl.UserLoginServiceImpl;
@@ -23,8 +20,6 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @RestController
