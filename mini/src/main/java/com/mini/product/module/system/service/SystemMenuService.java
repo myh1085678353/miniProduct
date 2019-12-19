@@ -13,5 +13,5 @@ import java.util.Map;
  */
 public interface SystemMenuService {
     //获取菜单
-    Map<String,Object> getMenuAll(HttpSession session);
+    Map<String,Object> getMenuAll();
 }

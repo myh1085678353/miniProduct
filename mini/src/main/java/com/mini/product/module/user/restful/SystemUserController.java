@@ -5,9 +5,9 @@ import com.mini.product.module.user.entity.SystemUserEntity;
 import com.mini.product.module.user.entity.SystemUserLoginEntity;
 import com.mini.product.module.user.entity.UserLoginData;
 import com.mini.product.common.response.ResponseUtil;
-import com.mini.product.module.user.service.impl.SystemUserLoginServiceImpl;
-import com.mini.product.module.user.service.impl.SystemUserServiceImpl;
-import com.mini.product.module.user.service.impl.UserLoginServiceImpl;
+import com.mini.product.module.user.service.SystemUserLoginService;
+import com.mini.product.module.user.service.SystemUserService;
+import com.mini.product.module.user.service.UserLoginService;
 import com.mini.product.util.IPUtil;
 import com.mini.product.util.StringUtil;
 import org.slf4j.Logger;
@@ -28,13 +28,13 @@ public class SystemUserController {
     private static Logger log = LoggerFactory.getLogger(SystemUserController.class);
 
     @Autowired
-    SystemUserServiceImpl systemUserServiceImpl;
+    SystemUserService systemUserService;
 
     @Autowired
-    SystemUserLoginServiceImpl systemUserLoginServiceImpl;
+    SystemUserLoginService systemUserLoginService;
 
     @Autowired
-    UserLoginServiceImpl userLoginServiceImpl;
+    UserLoginService userLoginService;
 
     @CrossOrigin(allowedHeaders = "token")
     @RequestMapping("login")
@@ -46,7 +46,7 @@ public class SystemUserController {
         log.info("request ip:"+ ip);
 
         systemUserEntity.setPassword(StringUtil.setPassword(systemUserEntity.getPassword()));
-        systemUserEntity = systemUserServiceImpl.login(systemUserEntity);   //查找用户信息
+        systemUserEntity = systemUserService.login(systemUserEntity);   //查找用户信息
 
         StringBuffer requestServerpath = httpServletRequest.getRequestURL();
         requestServerpath.delete(requestServerpath.indexOf("/", 7), requestServerpath.length());
@@ -78,7 +78,7 @@ public class SystemUserController {
         userLoginData.setToken(token);
         userLoginData.setSystemUserEntity(systemUserEntity);
 
-        userLoginServiceImpl.userLogin(userLoginData);
+        userLoginService.userLogin(userLoginData);
         httpServletResponse.addHeader("token", userLoginData.getToken());
         httpServletResponse.addHeader("Access-Control-Expose-Headers", "token");
 
@@ -92,7 +92,7 @@ public class SystemUserController {
         if(token == null){
             token = session.getId();
         }
-        UserLoginData userLoginData = userLoginServiceImpl.getUserInfo(token);
+        UserLoginData userLoginData = userLoginService.getUserInfo(token);
 //        List<SystemUserLoginEntity> LogoutData = systemUserLoginService.findLoginOutDataByUid(userLoginData.getSystemUserEntity().getUid());
 //        LogoutData.forEach(logoutData ->logoutData.setLoginOutTime(new Date()));
 //        systemUserLoginService.savAll(LogoutData);
@@ -106,7 +106,7 @@ public class SystemUserController {
         if(uid == null || "".equals(uid)){
             return ResponseUtil.buildError();
         }
-        SystemUserEntity systemUserEntity = systemUserServiceImpl.findFristByUid(uid);
+        SystemUserEntity systemUserEntity = systemUserService.findFristByUid(uid);
         if(systemUserEntity == null){
             return ResponseUtil.buildError();
         }

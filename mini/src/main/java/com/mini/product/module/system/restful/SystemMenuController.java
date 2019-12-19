@@ -26,12 +26,9 @@ public class SystemMenuController {
     SystemMenuService systemMenuService;
 
     @RequestMapping("getMenuAll")
-    public ResponseUtil getMenuAll(HttpSession session){
-        if (session == null){
-            return ResponseUtil.buildError();
-        }
+    public ResponseUtil getMenuAll(){
         ResponseUtil responseUtil = ResponseUtil.buildSuccess();
-        Map<String,Object> res = systemMenuService.getMenuAll(session);
+        Map<String,Object> res = systemMenuService.getMenuAll();
         responseUtil.setData(res);
         return responseUtil;
     }

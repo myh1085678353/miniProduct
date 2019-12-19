@@ -49,7 +49,7 @@ public class SystemMenuServiceImpl implements SystemMenuService {
     }
 
     @Override
-    public Map<String,Object> getMenuAll(HttpSession session) {
+    public Map<String,Object> getMenuAll( ) {
         List<SystemMenuEntity> systemMenuEntityList = this.getMenuAllForText();
         List<Map<String,Object>> list = this.getTarbar(systemMenuEntityList);
         Map<String,Object> res = new HashMap<>();
