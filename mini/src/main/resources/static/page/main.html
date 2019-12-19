@@ -76,7 +76,7 @@
             url: "/mini/menu/getMenuAll",
             type: "get"
         },function(data){
-            if(data.code == 200 && data.message == "请求成功"){
+            if(data.code == 200){
                 layer.close(layer_index);
                 var menu = data.data.data;
                 for(var idx in menu){
@@ -177,8 +177,10 @@
         $.myajax({
             url: "/mini/user/getLoginUser",
         },function(data){
-            var user = data.data.user;
-            $("#username").text(user.name);
+            if(data.code == 200){
+                var user = data.data.user;
+                $("#username").text(user.name);
+            }
         })
     }
     function quit(){

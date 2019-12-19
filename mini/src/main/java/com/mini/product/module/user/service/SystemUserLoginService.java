@@ -1,5 +1,6 @@
 package com.mini.product.module.user.service;
 
+import com.mini.product.module.user.entity.SystemUserEntity;
 import com.mini.product.module.user.entity.SystemUserLoginEntity;
 
 import java.util.List;
@@ -8,7 +9,7 @@ import java.util.List;
  * 用户登录
  */
 public interface SystemUserLoginService {
-    void saveUserLogin(SystemUserLoginEntity systemUserLoginEntity);
+    SystemUserLoginEntity saveUserLogin(SystemUserEntity systemUserEntity, String SessionId, String ip, String requestServerpath);
 
     List<SystemUserLoginEntity> findLoginDataByUid(String uid);
 

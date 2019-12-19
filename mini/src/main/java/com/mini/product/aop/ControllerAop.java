@@ -30,7 +30,7 @@ public class ControllerAop {
     public static long startTime;
     public static long endTime;
 
-    @Pointcut("execution(* com.mini.product.controller..*(..))"+
+    @Pointcut("execution(* com.mini.product.module.*.restful..*(..))"+
             "&& !execution(* com.mini.product.module.user.restful.SystemUserController.login(..))" +
             "&& !execution(* com.mini.product.module.user.restful.SystemUserController.logout(..))"
     )

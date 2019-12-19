@@ -26,9 +26,9 @@ public class SystemMenuServiceImpl implements SystemMenuService {
     public List<Map<String,Object>> getTarbar(List<SystemMenuEntity> systemMenuEntities){
         List<Map<String,Object>> list = new ArrayList<>();
         systemMenuEntities.forEach(systemMenuEntity -> {
-            if(systemMenuEntity.getSequence() != null){
+            if(systemMenuEntity.getPlid() == 0){
                 Map<String,Object> res = new HashMap<>();
-                List<SystemMenuEntity> systemMenuEntities1 = getdl(systemMenuEntities,systemMenuEntity.getSequence());
+                List<SystemMenuEntity> systemMenuEntities1 = getdl(systemMenuEntities,systemMenuEntity.getMenuId());
                 res.put("tabBar",systemMenuEntity);
                 res.put("dl",systemMenuEntities1);
 
