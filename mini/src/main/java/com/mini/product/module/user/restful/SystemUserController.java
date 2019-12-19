@@ -103,17 +103,18 @@ public class SystemUserController {
     @RequestMapping("getLoginUser")
     public ResponseUtil getLoginUser(HttpSession session){
         String uid = (String)session.getAttribute("uid");
-        if(uid == null || uid.equals("")){
-            return ResponseUtil.Error(SystemEnum.Error_Login_Action.toString());
+        if(uid == null || "".equals(uid)){
+            return ResponseUtil.buildError();
         }
         SystemUserEntity systemUserEntity = systemUserServiceImpl.findFristByUid(uid);
         if(systemUserEntity == null){
-            return ResponseUtil.Error(SystemEnum.Error_User_Not_Exist.toString());
+            return ResponseUtil.buildError();
         }
+        ResponseUtil responseUtil = ResponseUtil.buildSuccess();
         systemUserEntity.setPassword(null);
         Map<String,Object> res = new HashMap<>();
         res.put("user",systemUserEntity);
-
-        return ResponseUtil.SUCCESS(res);
+        responseUtil.setData(res);
+        return responseUtil;
     }
 }

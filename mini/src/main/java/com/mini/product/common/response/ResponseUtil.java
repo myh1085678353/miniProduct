@@ -74,7 +74,7 @@ public class ResponseUtil<T> {
 
 
 
-    public static ResponseUtil buildError(){
+    public static <T>ResponseUtil<T> buildError(){
         return new ResponseUtil(SystemEnum.Result_Error.toString());
     }
 }
