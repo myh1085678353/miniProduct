@@ -1,17 +1,14 @@
 package com.mini.product;
 
-import com.mini.product.model.entity.system.SystemInstitutionsEntity;
-import com.mini.product.model.repository.system.SystemInstitutionsRepository;
-import com.mini.product.service.system.SystemInstitutionsService;
-import com.mini.product.service.user.SystemUserService;
+import com.mini.product.module.system.entity.SystemInstitutionsEntity;
+import com.mini.product.module.system.service.impl.SystemInstitutionsServiceImpl;
+import com.mini.product.module.user.service.impl.SystemUserServiceImpl;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.sql.Time;
-import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -20,11 +17,11 @@ import java.util.Date;
 
 public class InstistutionTest {
     @Autowired
-    SystemInstitutionsService service;
+    SystemInstitutionsServiceImpl service;
 
     SystemInstitutionsEntity entity;
     @Autowired
-    SystemUserService test ;
+    SystemUserServiceImpl test ;
     @Test
     public void save(){
         SystemInstitutionsEntity entity = new SystemInstitutionsEntity();

@@ -1,10 +1,9 @@
 package com.mini.product.aop;
 
-import com.mini.product.enums.SystemEnum;
 import com.mini.product.exception.LoginErrorException;
-import com.mini.product.model.entity.user.UserLoginData;
-import com.mini.product.response.ResponseUtil;
-import com.mini.product.service.user.UserLoginService;
+import com.mini.product.module.user.entity.UserLoginData;
+import com.mini.product.common.response.ResponseUtil;
+import com.mini.product.module.user.service.impl.UserLoginServiceImpl;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.Signature;
 import org.aspectj.lang.annotation.*;
@@ -26,14 +25,14 @@ public class ControllerAop {
     private static final Logger log = LoggerFactory.getLogger(ControllerAop.class);
 
     @Autowired
-    UserLoginService userLoginService;
+    UserLoginServiceImpl userLoginServiceImpl;
 
     public static long startTime;
     public static long endTime;
 
     @Pointcut("execution(* com.mini.product.controller..*(..))"+
-            "&& !execution(* com.mini.product.controller.user.SystemUserController.login(..))" +
-            "&& !execution(* com.mini.product.controller.user.SystemUserController.logout(..))"
+            "&& !execution(* com.mini.product.module.user.restful.SystemUserController.login(..))" +
+            "&& !execution(* com.mini.product.module.user.restful.SystemUserController.logout(..))"
     )
     public void ControllerAopPointcut(){
 
@@ -54,9 +53,9 @@ public class ControllerAop {
 
         if(token == null){
             token = session.getId();
-            userLoginData = userLoginService.getUserInfo(session.getId());
+            userLoginData = userLoginServiceImpl.getUserInfo(session.getId());
         }else{
-            userLoginData = userLoginService.getUserInfo(token);
+            userLoginData = userLoginServiceImpl.getUserInfo(token);
         }
         log.info("token:"+token);
 

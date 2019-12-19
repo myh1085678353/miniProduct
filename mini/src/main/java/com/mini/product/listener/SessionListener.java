@@ -1,7 +1,7 @@
 package com.mini.product.listener;
 
-import com.mini.product.model.entity.user.SystemUserLoginEntity;
-import com.mini.product.service.user.SystemUserLoginService;
+import com.mini.product.module.user.entity.SystemUserLoginEntity;
+import com.mini.product.module.user.service.impl.SystemUserLoginServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +17,7 @@ public class SessionListener implements HttpSessionListener, HttpSessionAttribut
     private static Logger log = LoggerFactory.getLogger(SessionListener.class);
 
     @Autowired
-    SystemUserLoginService systemUserLoginService;
+    SystemUserLoginServiceImpl systemUserLoginServiceImpl;
 
     @Override
     public void attributeAdded(HttpSessionBindingEvent se) {
@@ -40,7 +40,7 @@ public class SessionListener implements HttpSessionListener, HttpSessionAttribut
         HttpSession session = se.getSession();
 
         log.info("deletedSessionId:"+session.getId());
-        List<SystemUserLoginEntity> systemUserLoginEntities = systemUserLoginService.findLoginDataByToken(session.getId());
+        List<SystemUserLoginEntity> systemUserLoginEntities = systemUserLoginServiceImpl.findLoginDataByToken(session.getId());
         systemUserLoginEntities.forEach(systemUserLoginEntity -> {
             systemUserLoginEntity.setLoginOutTime(new Date());
         });
