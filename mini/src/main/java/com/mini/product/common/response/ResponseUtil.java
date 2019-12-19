@@ -1,10 +1,18 @@
 package com.mini.product.common.response;
 
+import com.mini.product.enums.SystemEnum;
+
 import java.util.Map;
 
 public class ResponseUtil<T> {
     //泛型T储存任何类型，返回给前端
     public T data;
+
+    public String message = "";
+
+    public long time;
+
+    public Integer code;
 
     public T getData() {
         return data;
@@ -14,12 +22,36 @@ public class ResponseUtil<T> {
         this.data = data;
     }
 
-    public String message = "";
-    public long time;
-    public Integer code;
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public long getTime() {
+        return time;
+    }
+
+    public void setTime(long time) {
+        this.time = time;
+    }
+
+    public Integer getCode() {
+        return code;
+    }
+
+    public void setCode(Integer code) {
+        this.code = code;
+    }
 
     public ResponseUtil(){
 
+    }
+
+    public ResponseUtil(String message){
+        this.message = message;
     }
 
     public ResponseUtil(T data, String message, Integer code){
@@ -35,27 +67,14 @@ public class ResponseUtil<T> {
         this.code = code;
     }
 
-    public static ResponseUtil SUCCESS(){
-        return SUCCESS("请求成功");
+
+    public static <T>ResponseUtil<T> buildSuccess(){
+        return new ResponseUtil(SystemEnum.Result_Success.toString());
     }
 
-    public static ResponseUtil SUCCESS(String message){
-        return new ResponseUtil(message,200);
-    }
 
-    public static ResponseUtil SUCCESS(Map<String,Object> data, String message){
-        return new ResponseUtil(data,message,200);
-    }
 
-    public static ResponseUtil SUCCESS(Map<String,Object> data){
-        return SUCCESS(data,"请求成功");
-    }
-
-    public static ResponseUtil Error(){
-        return Error("请求失败");
-    }
-
-    public static ResponseUtil Error(String message){
-        return new ResponseUtil(message,404);
+    public static ResponseUtil buildError(){
+        return new ResponseUtil(SystemEnum.Result_Error.toString());
     }
 }

@@ -6,6 +6,7 @@ import com.mini.product.module.system.service.SystemMenuService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -45,5 +46,14 @@ public class SystemMenuServiceImpl implements SystemMenuService {
         }).collect(Collectors.toList());
 
         return systemMenuEntities;
+    }
+
+    @Override
+    public Map<String,Object> getMenuAll(HttpSession session) {
+        List<SystemMenuEntity> systemMenuEntityList = this.getMenuAllForText();
+        List<Map<String,Object>> list = this.getTarbar(systemMenuEntityList);
+        Map<String,Object> res = new HashMap<>();
+        res.put("data",list);
+        return res;
     }
 }

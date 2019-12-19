@@ -15,12 +15,5 @@ public class SystemInstitutionsServiceImpl implements SystemInstitutionsService 
 
     public List<SystemInstitutionsEntity> findall(){return systemInstitutionsRepository.findAll();}
 
-    public void save(SystemInstitutionsEntity systemInstitutionsEntity) {
-        systemInstitutionsRepository.save(systemInstitutionsEntity);
-    }
-
-    public SystemInstitutionsEntity findFristByUid(Integer id){
-        return systemInstitutionsRepository.findFirstByIdAndDeleted(id,0);
-    }
 
 }

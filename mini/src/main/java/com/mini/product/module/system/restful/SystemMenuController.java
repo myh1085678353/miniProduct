@@ -3,6 +3,7 @@ package com.mini.product.module.system.restful;
 import com.mini.product.common.response.ResponseUtil;
 import com.mini.product.module.system.entity.SystemMenuEntity;
 
+import com.mini.product.module.system.service.SystemMenuService;
 import com.mini.product.module.system.service.impl.SystemMenuServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,15 +23,16 @@ public class SystemMenuController {
     private static Logger log = LoggerFactory.getLogger(SystemMenuController.class);
 
     @Autowired
-    SystemMenuServiceImpl systemMenuServiceImpl;
+    SystemMenuService systemMenuService;
 
     @RequestMapping("getMenuAll")
     public ResponseUtil getMenuAll(HttpSession session){
-        String uid = (String)session.getAttribute("uid");
-        List<SystemMenuEntity> systemMenuEntityList = systemMenuServiceImpl.getMenuAllForText();
-        List<Map<String,Object>> list = systemMenuServiceImpl.getTarbar(systemMenuEntityList);
-        Map<String,Object> res = new HashMap<>();
-        res.put("data",list);
-        return ResponseUtil.SUCCESS(res);
+        if (session == null){
+            return ResponseUtil.buildError();
+        }
+        ResponseUtil responseUtil = ResponseUtil.buildSuccess();
+        Map<String,Object> res = systemMenuService.getMenuAll(session);
+        responseUtil.setData(res);
+        return responseUtil;
     }
 }
